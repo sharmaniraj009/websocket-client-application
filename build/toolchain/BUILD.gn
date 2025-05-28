@@ -20,7 +20,9 @@ toolchain("gcc") {
   }
 
   tool("alink") {
-    command = "rm -f {{output}} && ar rcs {{output}} {{inputs}}"
+    rspfile = "{{output}}.rsp"
+    command = "rm -f {{output}} && ar rcs {{output}} @$rspfile"
+    rspfile_content = "{{inputs}}"
     outputs = [ "{{target_out_dir}}/{{target_output_name}}{{output_extension}}" ]
     default_output_extension = ".a"
     output_prefix = "lib"
@@ -34,6 +36,7 @@ toolchain("gcc") {
     rspfile_content = "{{inputs}}"
     outputs = [ outfile ]
     description = "LINK $outfile"
+    default_output_dir = "{{target_out_dir}}"
   }
 
   tool("stamp") {
@@ -66,7 +69,9 @@ toolchain("clang") {
   }
 
   tool("alink") {
-    command = "rm -f {{output}} && ar rcs {{output}} {{inputs}}"
+    rspfile = "{{output}}.rsp"
+    command = "rm -f {{output}} && ar rcs {{output}} @$rspfile"
+    rspfile_content = "{{inputs}}"
     outputs = [ "{{target_out_dir}}/{{target_output_name}}{{output_extension}}" ]
     default_output_extension = ".a"
     output_prefix = "lib"
@@ -80,6 +85,7 @@ toolchain("clang") {
     rspfile_content = "{{inputs}}"
     outputs = [ outfile ]
     description = "LINK $outfile"
+    default_output_dir = "{{target_out_dir}}"
   }
 
   tool("stamp") {

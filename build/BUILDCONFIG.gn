@@ -1,12 +1,28 @@
 # build/BUILDCONFIG.gn
 # This file sets up the basic build environment and toolchain
 
+# Import build arguments
+declare_args() {
+  # Build configuration
+  use_clang = false
+  
+  # Target configuration  
+  target_os = ""
+  target_cpu = ""
+  host_os = ""
+  host_cpu = ""
+}
+
 # Determine the host OS
 if (host_os == "") {
-  if (target_os == "") {
+  if (host_os == "linux") {
     host_os = "linux"
+  } else if (host_os == "mac") {
+    host_os = "mac"  
+  } else if (host_os == "win") {
+    host_os = "win"
   } else {
-    host_os = target_os
+    host_os = "linux"  # Default fallback
   }
 }
 
@@ -17,11 +33,7 @@ if (target_os == "") {
 
 # Determine the host CPU architecture
 if (host_cpu == "") {
-  if (target_cpu == "") {
-    host_cpu = "x64"
-  } else {
-    host_cpu = target_cpu
-  }
+  host_cpu = "x64"  # Default to x64
 }
 
 # Determine the target CPU architecture
@@ -37,9 +49,9 @@ if (use_clang) {
 }
 
 # Global variables accessible to all BUILD.gn files
-is_linux = host_os == "linux"
-is_mac = host_os == "mac"
-is_win = host_os == "win"
+is_linux = target_os == "linux"
+is_mac = target_os == "mac"
+is_win = target_os == "win"
 
 is_clang = use_clang
 is_gcc = !use_clang
