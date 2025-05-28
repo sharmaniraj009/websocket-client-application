@@ -1,0 +1,49 @@
+# build/BUILDCONFIG.gn
+# This file sets up the basic build environment and toolchain
+
+# Determine the host OS
+if (host_os == "") {
+  if (target_os == "") {
+    host_os = "linux"
+  } else {
+    host_os = target_os
+  }
+}
+
+# Determine the target OS
+if (target_os == "") {
+  target_os = host_os
+}
+
+# Determine the host CPU architecture
+if (host_cpu == "") {
+  if (target_cpu == "") {
+    host_cpu = "x64"
+  } else {
+    host_cpu = target_cpu
+  }
+}
+
+# Determine the target CPU architecture
+if (target_cpu == "") {
+  target_cpu = host_cpu
+}
+
+# Set default toolchain based on compiler preference
+if (use_clang) {
+  set_default_toolchain("//build/toolchain:clang")
+} else {
+  set_default_toolchain("//build/toolchain:gcc")
+}
+
+# Global variables accessible to all BUILD.gn files
+is_linux = host_os == "linux"
+is_mac = host_os == "mac"
+is_win = host_os == "win"
+
+is_clang = use_clang
+is_gcc = !use_clang
+
+# Architecture flags
+is_64_bit = target_cpu == "x64"
+is_32_bit = target_cpu == "x86"

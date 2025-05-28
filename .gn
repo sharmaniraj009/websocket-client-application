@@ -1,0 +1,19 @@
+# .gn file - GN configuration
+
+# Set the root directory for the build
+buildconfig = "//build/BUILDCONFIG.gn"
+
+# Default build arguments
+default_args = {
+  # Use Clang by default if available
+  use_clang = true
+  
+  # Enable SSL support
+  enable_ssl = true
+  
+  # Enable testing
+  enable_testing = true
+  
+  # Debug build by default
+  is_debug = true
+}

@@ -1,0 +1,177 @@
+# Build configuration for WebSocket Client
+# Root BUILD.gn file
+
+# Declare command line arguments
+declare_args() {
+  # Build configuration
+  is_debug = true
+  use_clang = false
+  
+  # Compiler flags
+  enable_warnings = true
+  treat_warnings_as_errors = false
+  
+  # Features
+  enable_ssl = true
+  enable_testing = true
+}
+
+# Global compiler configuration
+config("default_config") {
+  cflags = []
+  cflags_cc = []
+  ldflags = []
+  
+  # Compiler selection
+  if (use_clang) {
+    cflags += [ "-fcolor-diagnostics" ]
+  } else {
+    cflags += [ "-fdiagnostics-color=always" ]
+  }
+  
+  # C++ standard
+  cflags_cc += [ "-std=c++17" ]
+  
+  # Warning flags
+  if (enable_warnings) {
+    cflags += [
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wno-unused-parameter",
+    ]
+    
+    if (treat_warnings_as_errors) {
+      cflags += [ "-Werror" ]
+    }
+  }
+  
+  # Debug/Release configuration
+  if (is_debug) {
+    cflags += [
+      "-g",
+      "-O0",
+      "-DDEBUG",
+    ]
+  } else {
+    cflags += [
+      "-O2",
+      "-DNDEBUG",
+      "-fomit-frame-pointer",
+    ]
+    ldflags += [ "-s" ]  # Strip symbols
+  }
+}
+
+# SSL/TLS configuration
+config("ssl_config") {
+  if (enable_ssl) {
+    defines = [ "ENABLE_SSL=1" ]
+    libs = [
+      "ssl",
+      "crypto",
+    ]
+  } else {
+    defines = [ "ENABLE_SSL=0" ]
+  }
+}
+
+# Threading configuration
+config("threading_config") {
+  libs = [ "pthread" ]
+  cflags_cc += [ "-pthread" ]
+}
+
+# Main executable target
+executable("websocket_client") {
+  sources = [
+    "main.cpp",
+    "websocket_client.cpp",
+  ]
+  
+  configs += [
+    ":default_config",
+    ":ssl_config",
+    ":threading_config",
+  ]
+  
+  deps = []
+}
+
+# Static library for reusable components
+static_library("websocket_lib") {
+  sources = [
+    "websocket_client.cpp",
+  ]
+  
+  public = [
+    "websocket_client.h",
+  ]
+  
+  configs += [
+    ":default_config",
+    ":ssl_config",
+    ":threading_config",
+  ]
+  
+  public_configs = [
+    ":default_config",
+    ":ssl_config",
+    ":threading_config",
+  ]
+}
+
+# Test configuration
+if (enable_testing) {
+  config("test_config") {
+    cflags_cc += [ "-DTESTING=1" ]
+    libs = [ "gtest", "gtest_main" ]
+  }
+  
+  # Unit tests executable
+  executable("websocket_tests") {
+    testonly = true
+    
+    sources = [
+      "tests/websocket_client_test.cpp",
+      "tests/url_parser_test.cpp",
+      "tests/frame_parser_test.cpp",
+    ]
+    
+    configs += [
+      ":default_config",
+      ":ssl_config",
+      ":threading_config",
+      ":test_config",
+    ]
+    
+    deps = [
+      ":websocket_lib",
+    ]
+  }
+  
+  # Test runner group
+  group("tests") {
+    testonly = true
+    deps = [
+      ":websocket_tests",
+    ]
+  }
+}
+
+# Build groups for different configurations
+group("debug") {
+  deps = [ ":websocket_client" ]
+  if (enable_testing) {
+    deps += [ ":tests" ]
+  }
+}
+
+group("release") {
+  deps = [ ":websocket_client" ]
+}
+
+# Default target
+group("default") {
+  deps = [ ":websocket_client" ]
+}
