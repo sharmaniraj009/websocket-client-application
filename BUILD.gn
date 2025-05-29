@@ -1,9 +1,17 @@
+
 executable("websocket_client") {
   sources = [
     "main.cpp",
     "websocket_client.cpp",
   ]
 
-  include_dirs = [ "." ]
-  cflags = [ "-std=c++17" ]
+  cflags_cc = [
+    "-std=c++17",
+  ]
+
+  libs = [
+    "ssl",
+    "crypto",
+    "pthread",
+  ]
 }

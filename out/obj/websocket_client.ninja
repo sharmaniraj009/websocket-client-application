@@ -1,0 +1,21 @@
+defines =
+include_dirs =
+cflags =
+cflags_cc = -std=c++17
+root_out_dir = .
+target_output_name = websocket_client
+
+build obj/websocket_client.main.o: cxx ../main.cpp
+  source_file_part = main.cpp
+  source_name_part = main
+build obj/websocket_client.websocket_client.o: cxx ../websocket_client.cpp
+  source_file_part = websocket_client.cpp
+  source_name_part = websocket_client
+
+build ./websocket_client: link obj/websocket_client.main.o obj/websocket_client.websocket_client.o
+  ldflags =
+  libs = -lssl -lcrypto -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = 

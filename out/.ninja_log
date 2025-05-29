@@ -1,0 +1,4 @@
+# ninja log v5
+0	966	1748506402683482397	obj/websocket_client.main.o	514c6db04216c958
+1	3081	1748506404792541061	obj/websocket_client.websocket_client.o	eaaf3f13e597c2f7
+0	200	1748506530757044766	websocket_client	d8af4c69a30b5a1
