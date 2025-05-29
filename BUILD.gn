@@ -1,4 +1,3 @@
-
 executable("websocket_client") {
   sources = [
     "main.cpp",
@@ -13,5 +12,31 @@ executable("websocket_client") {
     "ssl",
     "crypto",
     "pthread",
+  ]
+}
+
+executable("websocket_tests") {
+  sources = [
+    "test_websocket_client.cpp",
+    "websocket_client.cpp",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+  ]
+
+  libs = [
+    "ssl",
+    "crypto",
+    "pthread",
+  ]
+
+  testonly = true
+}
+
+group("tests") {
+  testonly = true
+  deps = [
+    ":websocket_tests",
   ]
 }
