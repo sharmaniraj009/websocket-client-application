@@ -1,4 +1,1 @@
 set_default_toolchain("//toolchain:gcc")
-
-declare_args() {
-}

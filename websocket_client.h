@@ -66,7 +66,8 @@ private:
     bool parseFrame(const std::vector<uint8_t>& data, WebSocketFrame& frame);
     std::vector<uint8_t> createFrame(uint8_t opcode, const std::vector<uint8_t>& payload, bool mask = true);
     void handleFrame(const WebSocketFrame& frame);
-    
+    bool sendFrame(uint8_t opcode, const std::vector<uint8_t>& payload);
+
     // Network I/O
     int socketRead(void* buffer, int length);
     int socketWrite(const void* buffer, int length);

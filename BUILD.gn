@@ -5,7 +5,5 @@ executable("websocket_client") {
   ]
 
   include_dirs = [ "." ]
-
   cflags = [ "-std=c++17" ]
-  libs = [ "ssl", "crypto", "pthread" ]
 }

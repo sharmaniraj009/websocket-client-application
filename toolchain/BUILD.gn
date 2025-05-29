@@ -1,0 +1,21 @@
+toolchain("gcc") {
+  tool("cc") {
+    command = "g++ -c {{source}} -o {{output}}"
+    description = "CC {{source}}"
+  }
+
+  tool("cxx") {
+    command = "g++ -c {{source}} -o {{output}}"
+    description = "CXX {{source}}"
+  }
+
+  tool("link") {
+    command = "g++ -o {{output}} {{inputs}} -lssl -lcrypto -lpthread"
+    description = "LINK {{output}}"
+  }
+
+  tool("stamp") {
+    command = "touch {{output}}"
+    description = "STAMP {{output}}"
+  }
+}
