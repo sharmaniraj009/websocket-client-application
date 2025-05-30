@@ -1,12 +1,11 @@
-# BUILD.gn - Main build file with debug/release configurations
+executable("websocket_client") {
+  sources = [
+    "main.cpp",
+    "websocket_client.cpp",
+  ]
 
-# Common configuration for all targets
-config("common_config") {
   cflags_cc = [
     "-std=c++17",
-    "-Wall",
-    "-Wextra",
-    "-Wpedantic",
   ]
 
   libs = [
@@ -16,129 +15,28 @@ config("common_config") {
   ]
 }
 
-# Debug configuration
-config("debug_config") {
-  cflags_cc = [
-    "-g",           # Debug symbols
-    "-O0",          # No optimization
-    "-DDEBUG",      # Debug macro
-    "-fno-omit-frame-pointer",
-  ]
-  
-  defines = [
-    "DEBUG=1",
-    "LOG_LEVEL=0",  # Verbose logging
-  ]
-}
-
-# Release configuration
-config("release_config") {
-  cflags_cc = [
-    "-O3",          # Maximum optimization
-    "-DNDEBUG",     # Disable assertions
-    "-flto",        # Link-time optimization
-    "-fomit-frame-pointer",
-  ]
-  
-  defines = [
-    "NDEBUG=1",
-    "LOG_LEVEL=2",  # Error logging only
-  ]
-  
-  ldflags = [
-    "-flto",
-    "-s",           # Strip symbols
-  ]
-}
-
-# Debug version of websocket client
-executable("websocket_client_debug") {
-  sources = [
-    "main.cpp",
-    "websocket_client.cpp",
-  ]
-
-  configs += [
-    ":common_config",
-    ":debug_config",
-  ]
-  
-  output_name = "websocket_client_debug"
-}
-
-# Release version of websocket client
-executable("websocket_client_release") {
-  sources = [
-    "main.cpp",
-    "websocket_client.cpp",
-  ]
-
-  configs += [
-    ":common_config",
-    ":release_config",
-  ]
-  
-  output_name = "websocket_client"
-}
-
-# Debug version of tests
-executable("websocket_tests_debug") {
+executable("websocket_tests") {
   sources = [
     "test_websocket_client.cpp",
     "websocket_client.cpp",
   ]
 
-  configs += [
-    ":common_config",
-    ":debug_config",
+  cflags_cc = [
+    "-std=c++17",
+  ]
+
+  libs = [
+    "ssl",
+    "crypto",
+    "pthread",
   ]
 
   testonly = true
-  output_name = "websocket_tests_debug"
-}
-
-# Release version of tests
-executable("websocket_tests_release") {
-  sources = [
-    "test_websocket_client.cpp",
-    "websocket_client.cpp",
-  ]
-
-  configs += [
-    ":common_config",
-    ":release_config",
-  ]
-
-  testonly = true
-  output_name = "websocket_tests"
-}
-
-# Convenience groups
-group("debug") {
-  deps = [
-    ":websocket_client_debug",
-    ":websocket_tests_debug",
-  ]
-}
-
-group("release") {
-  deps = [
-    ":websocket_client_release",
-    ":websocket_tests_release",
-  ]
 }
 
 group("tests") {
   testonly = true
   deps = [
-    ":websocket_tests_debug",
-    ":websocket_tests_release",
-  ]
-}
-
-group("all") {
-  deps = [
-    ":debug",
-    ":release",
+    ":websocket_tests",
   ]
 }
