@@ -1,4 +1,4 @@
-
+[![C/C++ CI](https://github.com/sharmaniraj009/websocket-client-application/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/sharmaniraj009/websocket-client-application/actions/workflows/c-cpp.yml)
 
 
 # WebSocket Client Application
