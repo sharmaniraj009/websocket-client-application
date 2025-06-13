@@ -85,6 +85,3 @@ It serves as an educational tool for anyone looking to deeply understand how Web
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
----
-
-Let me know if you'd like this tailored for a C++ documentation generator or Doxygen setup.
