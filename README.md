@@ -46,7 +46,8 @@ git clone https://github.com/sharmaniraj009/websocket-client-application.git
 cd websocket-client-application
 mkdir build && cd build
 gn gen out
-ninja -S out
+ninja -C out/test websocket_tests
+
 ```
 
 ### Running
