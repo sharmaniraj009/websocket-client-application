@@ -18,17 +18,15 @@ A low-level WebSocket client implementation in C++ using raw Berkeley sockets an
 
 ```
 .
-├── include/
-│   ├── base64.hpp          # Base64 encoding utility
-│   ├── sha1.hpp            # SHA-1 hashing function
-│   └── websocket.hpp       # WebSocket framing and connection logic
-├── src/
-│   ├── base64.cpp
-│   ├── sha1.cpp
-│   └── websocket.cpp
-├── main.cpp                # Entry point: creates and runs WebSocket client
-├── CMakeLists.txt          # Build instructions using CMake
-└── README.md               # You're reading it!
+├── main.cpp
+├── websocket_client.cpp
+├── test_websocket_client.cpp
+├── websocket_client.h
+├── BUILD.gn
+├── BUILDCONFIG.gn
+├── build/
+    ├── BUILD.gn
+
 ```
 
 ## 🚀 Getting Started
@@ -53,7 +51,7 @@ ninja -C out/test websocket_tests
 ### Running
 
 ```bash
-./websocket-client
+./websocket-client.exe
 ```
 
 
